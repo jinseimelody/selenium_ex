@@ -1,9 +1,16 @@
 import * as fs from 'fs';
 import { v4 as uuidv4 } from 'uuid';
+import chalk from 'chalk';
 
 const dataPath = "./data";
+export const log = (text, color) => {
+    if (!color) {
+        color = "white";
+    }
+    console.log(chalk[color](text));
+};
 
-export const fetch = async (callback) => {
+export const load = async (callback) => {
     fs.readdir(dataPath, (err, files) => {
         const data = []
         if (err) {
@@ -11,7 +18,6 @@ export const fetch = async (callback) => {
         }
         files.forEach(fileName => {
             const rawData = fs.readFileSync(dataPath + '/' + fileName);
-            // console.log(JSON.parse(rawData));
             data.push(JSON.parse(rawData));
         });
         callback(data);
@@ -27,6 +33,16 @@ export const takeScreenShot = async (path, driver) => {
         await fs.writeFileSync(relativePath, encodedString, 'base64');
 
     } catch(ex) {
+        console.log(ex);
+    }
+}
+
+export const printPage = async (path, driver) => {
+    try {
+        const relativePath = path + '/' + uuidv4() + '.pdf';
+        let base64 = await driver.printPage({pageRanges:["1-2"]});
+        await fs.writeFileSync(relativePath, base64, 'base64');
+    } catch (ex) {
         console.log(ex);
     }
 }

@@ -11,6 +11,9 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "chalk": "^5.0.0",
+    "change-case": "^4.1.2",
+    "number-string": "^2.0.1",
     "selenium-webdriver": "^4.1.1",
     "uuid": "^8.3.2"
   }

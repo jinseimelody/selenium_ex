@@ -1,0 +1,49 @@
+{
+  "id": "03bf4ae1-6f21-48d7-8d2c-693561df20f9",
+  "version": "2.0",
+  "name": "selenium_sample",
+  "url": "https://github.com",
+  "tests": [{
+    "id": "c4cab641-c6aa-4580-91c0-eba14a3131a8",
+    "name": "login git hub",
+    "commands": [{
+      "id": "a84458d2-d8e3-4594-b623-e12e30ee9bfd",
+      "comment": "",
+      "command": "open",
+      "target": "/",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "d1abdc4b-22e3-437c-a0c3-9b8ed8fc8e18",
+      "comment": "",
+      "command": "setWindowSize",
+      "target": "1936x1056",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "6ea4537a-0bc9-494c-bef4-1c8ab0fb6dfe",
+      "comment": "",
+      "command": "click",
+      "target": "linkText=Sign in",
+      "targets": [
+        ["linkText=Sign in", "linkText"],
+        ["css=.mr-3 > .HeaderMenu-link", "css:finder"],
+        ["xpath=//a[contains(text(),'Sign in')]", "xpath:link"],
+        ["xpath=//a[contains(@href, '/login')]", "xpath:href"],
+        ["xpath=//div[2]/div[2]/a", "xpath:position"],
+        ["xpath=//a[contains(.,'Sign in')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }]
+  }],
+  "suites": [{
+    "id": "c258d046-4ab9-4257-aa88-29d70591177d",
+    "name": "Default Suite",
+    "persistSession": false,
+    "parallel": false,
+    "timeout": 300,
+    "tests": ["c4cab641-c6aa-4580-91c0-eba14a3131a8"]
+  }],
+  "urls": ["https://github.com/"],
+  "plugins": []
+}
