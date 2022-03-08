@@ -6,11 +6,13 @@ import {
     Key,
     until
 } from 'selenium-webdriver';
-import { camelCase } from "change-case";
+// import { camelCase } from "change-case";
 import { toNumber } from "number-string";
 // import { promise } from "selenium-webdriver";
 
 // const imagePath = "./images";
+const waitingLimit = 1500;
+let processBar = [];
 let driver = await new Builder().forBrowser('chrome').setChromeOptions().build();
 
 const load = () => {
@@ -42,14 +44,20 @@ const execute = async (content) => {
     if (!tests) return;
 
     // execute all test case
+    processBar = Array(tests.length).fill(0);
     for (let i = 0; i < tests.length; i++) {
         const testCase = tests[i];
         const commands = testCase.commands;
         if (!commands) return;
 
-        helper.log("case name: " + testCase.name, 'green');
+        helper.log("case name: " + testCase.name, "green");
         commands.forEach(async (command) => {
-            await executeCommand(url, command);
+            // check
+            const exeResult = await executeCommand(url, command);
+            if (!exeResult) {
+                helper.log("test failed", "red");
+                return;
+            }
         })
         console.log("=========================================================");
     }
@@ -57,25 +65,51 @@ const execute = async (content) => {
 
 const executeCommand = async (url, command) => {
     const commandName = command.command;
+    const target = command.target;
     switch(commandName) {
         case "open": {
-            // open url
             await driver.get(url + command.target);
         } break;
 
         case "setWindowSize": {
-            const target = command.target;
             const [ width, height ] = target.split("x");
             await driver.manage().window().setRect({ width: toNumber(width) , height: toNumber(height) });
         }; break;
 
         case "click": {
-            const target = command.target;
-            const [ locator, value ] = target.split("=");
-            const element = driver.findElement(By[locator](value));
+            const element = await findElement(target);
+            if (!element) return false;
             element.click();
         }; break;
     }
+
+    return true;
 };
+
+const findElement = async (target) => {
+    let waitingTime = waitingLimit;
+    const [ locator, value ] = target.split("=");
+    let element = null;
+
+    while (!element && waitingTime > 0) {
+        try {
+            element = await driver.findElement(By[locator](value));
+            if (element) break;
+
+            // waiting for 300 miliseconds to retry
+            await sleep(300);
+            waitingTime -= 300;
+            if (waitingTime <= 0) {
+                helper.log("waiting time limit exceeded", "red");
+                break;
+            }
+        } catch {}
+    }
+    return element;
+}
+
+const sleep = async (ms) => {
+    return new Promise(resolve => setTimeout(resolve, ms));
+} 
 
 load();
