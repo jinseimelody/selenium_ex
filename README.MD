@@ -6,8 +6,6 @@ Setup
   - giải nén chromedriver_win32.zip chọn đường dẫn (ex: C:/Celenium)
   - thêm biến môi trường tại đường dẫn (ex: C:/Celenium)
 3. start code
-  - [back, forward, refresh] tham khảo: https://www.selenium.dev/documentation/webdriver/browser/navigation/
-  - [getTitle, getCurrentUrl] tham khảo: https://www.selenium.dev/documentation/webdriver/browser/
-  - https://www.selenium.dev/documentation/webdriver/browser/alerts/
-1. run
+  - tham khảo: https://www.selenium.dev/documentation
+4. run
   - npm start
