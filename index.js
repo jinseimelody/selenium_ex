@@ -6,9 +6,7 @@ import {
     Key,
     until
 } from 'selenium-webdriver';
-// import { camelCase } from "change-case";
 import { toNumber } from "number-string";
-// import { promise } from "selenium-webdriver";
 
 // const imagePath = "./images";
 const waitingLimit = 1500;
@@ -23,10 +21,9 @@ const load = () => {
                 const content = files[i];
                 helper.log("file name: " + content.name);
 
-                // dotask
                 await execute(content);
             }
-        } catch(err) {
+        } catch (err) {
             helper.log("exception: " + err, "red");
         } finally {
             // setTimeout(() => {
@@ -52,7 +49,8 @@ const execute = async (content) => {
 
         helper.log("case name: " + testCase.name, "green");
         commands.forEach(async (command) => {
-            // check
+
+            console.log(command.command);
             const exeResult = await executeCommand(url, command);
             if (!exeResult) {
                 helper.log("test failed", "red");
@@ -66,20 +64,33 @@ const execute = async (content) => {
 const executeCommand = async (url, command) => {
     const commandName = command.command;
     const target = command.target;
-    switch(commandName) {
+    const value = command.value;
+    switch (commandName) {
         case "open": {
             await driver.get(url + command.target);
         } break;
 
         case "setWindowSize": {
-            const [ width, height ] = target.split("x");
-            await driver.manage().window().setRect({ width: toNumber(width) , height: toNumber(height) });
+            const [width, height] = target.split("x");
+            await driver.manage().window().setRect({ width: toNumber(width), height: toNumber(height) });
         }; break;
 
         case "click": {
             const element = await findElement(target);
             if (!element) return false;
             element.click();
+        }; break;
+
+        case "type": {
+            const element = await findElement(target);
+            if (!element) return false;
+            element.sendKeys(value);
+        }; break;
+
+        case "mouseOver": {
+            const element = await findElement(target);
+            const actions = driver.actions({ async: true });
+            await actions.move({ origin: element }).perform();
         }; break;
     }
 
@@ -88,7 +99,7 @@ const executeCommand = async (url, command) => {
 
 const findElement = async (target) => {
     let waitingTime = waitingLimit;
-    const [ locator, value ] = target.split("=");
+    const [locator, value] = target.split("=");
     let element = null;
 
     while (!element && waitingTime > 0) {
@@ -103,13 +114,13 @@ const findElement = async (target) => {
                 helper.log("waiting time limit exceeded", "red");
                 break;
             }
-        } catch {}
+        } catch { }
     }
     return element;
 }
 
 const sleep = async (ms) => {
     return new Promise(resolve => setTimeout(resolve, ms));
-} 
+}
 
 load();

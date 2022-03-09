@@ -34,6 +34,103 @@
         ["xpath=//a[contains(.,'Sign in')]", "xpath:innerText"]
       ],
       "value": ""
+    }, {
+      "id": "9638054c-0435-4e19-b4e3-5e06225fb20b",
+      "comment": "",
+      "command": "click",
+      "target": "id=login_field",
+      "targets": [
+        ["id=login_field", "id"],
+        ["name=login", "name"],
+        ["css=#login_field", "css:finder"],
+        ["xpath=//input[@id='login_field']", "xpath:attributes"],
+        ["xpath=//div[@id='login']/div[4]/form/input[2]", "xpath:idRelative"],
+        ["xpath=//input[2]", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "294634df-41f0-42ff-95c8-262a38077852",
+      "comment": "",
+      "command": "type",
+      "target": "id=login_field",
+      "targets": [
+        ["id=login_field", "id"],
+        ["name=login", "name"],
+        ["css=#login_field", "css:finder"],
+        ["xpath=//input[@id='login_field']", "xpath:attributes"],
+        ["xpath=//div[@id='login']/div[4]/form/input[2]", "xpath:idRelative"],
+        ["xpath=//input[2]", "xpath:position"]
+      ],
+      "value": "jinseimelody@gmail.com"
+    }, {
+      "id": "0eae5d83-bc8c-47b1-80b3-19fc0e6dcc81",
+      "comment": "",
+      "command": "click",
+      "target": "id=password",
+      "targets": [
+        ["id=password", "id"],
+        ["name=password", "name"],
+        ["css=#password", "css:finder"],
+        ["xpath=//input[@id='password']", "xpath:attributes"],
+        ["xpath=//div[@id='login']/div[4]/form/div/input", "xpath:idRelative"],
+        ["xpath=//form/div/input", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "541373c5-94d5-4744-a192-80079892fc1d",
+      "comment": "",
+      "command": "type",
+      "target": "id=password",
+      "targets": [
+        ["id=password", "id"],
+        ["name=password", "name"],
+        ["css=#password", "css:finder"],
+        ["xpath=//input[@id='password']", "xpath:attributes"],
+        ["xpath=//div[@id='login']/div[4]/form/div/input", "xpath:idRelative"],
+        ["xpath=//form/div/input", "xpath:position"]
+      ],
+      "value": "_Jin.Melody97"
+    }, {
+      "id": "2e1be969-bda2-4d22-9ded-d21ef128e7b3",
+      "comment": "",
+      "command": "click",
+      "target": "name=commit",
+      "targets": [
+        ["name=commit", "name"],
+        ["css=.btn", "css:finder"],
+        ["xpath=//input[@name='commit']", "xpath:attributes"],
+        ["xpath=//div[@id='login']/div[4]/form/div/input[12]", "xpath:idRelative"],
+        ["xpath=//input[12]", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "17357fbb-ca60-4854-8104-6a8ac64dcefc",
+      "comment": "",
+      "command": "mouseOver",
+      "target": "linkText=jinseimelody/selenium_ex",
+      "targets": [
+        ["linkText=jinseimelody/selenium_ex", "linkText"],
+        ["css=.dashboard-sidebar > #dashboard-repos-container > #repos-container .public:nth-child(1) .color-fg-default", "css:finder"],
+        ["xpath=//div[@id='repos-container']/ul/li/div/div/a", "xpath:idRelative"],
+        ["xpath=(//a[contains(@href, '/jinseimelody/selenium_ex')])[2]", "xpath:href"],
+        ["xpath=//div/div/a", "xpath:position"],
+        ["xpath=//a[contains(.,'jinseimelody/selenium_ex')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "5eb6dc2e-b6e2-4359-8282-2cec4a4d0b4c",
+      "comment": "",
+      "command": "click",
+      "target": "linkText=jinseimelody/selenium_ex",
+      "targets": [
+        ["linkText=jinseimelody/selenium_ex", "linkText"],
+        ["css=.dashboard-sidebar > #dashboard-repos-container > #repos-container .public:nth-child(1) .color-fg-default", "css:finder"],
+        ["xpath=//div[@id='repos-container']/ul/li/div/div/a", "xpath:idRelative"],
+        ["xpath=(//a[contains(@href, '/jinseimelody/selenium_ex')])[2]", "xpath:href"],
+        ["xpath=//div/div/a", "xpath:position"],
+        ["xpath=//a[contains(.,'jinseimelody/selenium_ex')]", "xpath:innerText"]
+      ],
+      "value": ""
     }]
   }],
   "suites": [{
