@@ -23,15 +23,15 @@ describe('search', function() {
     await driver.manage().window().setRect({ width: 1032, height: 634 })
     // 3 | type | name=q | gss-sol
     await driver.findElement(By.name("q")).sendKeys("gss-sol")
-    // 4 | click | name=btnK | 
-    await driver.findElement(By.name("btnK")).click()
-    // 5 | click | xpath=//h3[contains(.,'Công Ty Cổ Phần Giải Pháp Không Gian Xanh')] | 
-    await driver.findElement(By.xpath("//h3[contains(.,\'Công Ty Cổ Phần Giải Pháp Không Gian Xanh\')]")).click()
-    // 6 | assertElementPresent | xpath=//div[@class='footer_bottom' and contains(., "Green Space Solution")]  | 
-    // confirm the GSS website is opened
-    {
-      const elements = await driver.findElements(By.xpath("//div[@class=\'footer_bottom\' and contains(., \"Green Space Solution\")] "))
-      assert(elements.length)
-    }
+    // // 4 | click | name=btnK | 
+    // await driver.findElement(By.name("btnK")).click()
+    // // 5 | click | xpath=//h3[contains(.,'Công Ty Cổ Phần Giải Pháp Không Gian Xanh')] | 
+    // await driver.findElement(By.xpath("//h3[contains(.,\'Công Ty Cổ Phần Giải Pháp Không Gian Xanh\')]")).click()
+    // // 6 | assertElementPresent | xpath=//div[@class='footer_bottom' and contains(., "Green Space Solution")]  | 
+    // // confirm the GSS website is opened
+    // {
+    //   const elements = await driver.findElements(By.xpath("//div[@class=\'footer_bottom\' and contains(., \"Green Space Solution\")] "))
+    //   assert(elements.length)
+    // }
   })
 })
