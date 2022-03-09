@@ -8,55 +8,53 @@ import {
 } from 'selenium-webdriver';
 import { toNumber } from "number-string";
 
-// const imagePath = "./images";
+const imagePath = "./images";
 const waitingLimit = 1500;
-let processBar = [];
-let driver = await new Builder().forBrowser('chrome').setChromeOptions().build();
+const driver = await new Builder().forBrowser('chrome').setChromeOptions().build();
 
 const load = () => {
-    helper.load(async (files) => {
+    helper.load(async (pageObjects) => {
         try {
             // foreach file in data folder
-            for (let i = 0; i < files.length; i++) {
-                const content = files[i];
-                helper.log("file name: " + content.name);
+            for (let pageObject of pageObjects) {
+                helper.log("file name: " + pageObject.name);
 
-                await execute(content);
+                await execute(pageObject);
             }
         } catch (err) {
             helper.log("exception: " + err, "red");
         } finally {
-            // setTimeout(() => {
-            //     await driver.quit();
-            // }, 1000);
+            setTimeout(() => {
+                await driver.quit();
+            }, 1000);
         }
     });
 };
 
-const execute = async (content) => {
-    const url = content.url;
+const execute = async (pageObject) => {
+    const url = pageObject.url;
     helper.log("url: " + url, 'green');
 
-    const tests = content.tests;
+    const tests = pageObject.tests;
     if (!tests) return;
 
     // execute all test case
-    processBar = Array(tests.length).fill(0);
-    for (let i = 0; i < tests.length; i++) {
-        const testCase = tests[i];
+    for (const testCase of tests) {
         const commands = testCase.commands;
         if (!commands) return;
 
         helper.log("case name: " + testCase.name, "green");
-        commands.forEach(async (command) => {
-
-            console.log(command.command);
+        for (let command of commands) {
             const exeResult = await executeCommand(url, command);
             if (!exeResult) {
                 helper.log("test failed", "red");
                 return;
             }
-        })
+            // take screenshot when command executed successfully
+            helper.takeScreenShot(imagePath, driver);
+        }
+
+        // todo: write test result to excel
         console.log("=========================================================");
     }
 };
@@ -76,19 +74,20 @@ const executeCommand = async (url, command) => {
         }; break;
 
         case "click": {
-            const element = await findElement(target);
+            const element = await findElement(command);
             if (!element) return false;
             element.click();
         }; break;
 
-        case "type": {
-            const element = await findElement(target);
+        case "type":
+        case "sendKeys": {
+            const element = await findElement(command);
             if (!element) return false;
             element.sendKeys(value);
         }; break;
 
         case "mouseOver": {
-            const element = await findElement(target);
+            const element = await findElement(command);
             const actions = driver.actions({ async: true });
             await actions.move({ origin: element }).perform();
         }; break;
@@ -97,25 +96,41 @@ const executeCommand = async (url, command) => {
     return true;
 };
 
-const findElement = async (target) => {
-    let waitingTime = waitingLimit;
-    const [locator, value] = target.split("=");
+const findElement = async (command) => {
     let element = null;
+    if (command.target) {
+        let waitingTime = waitingLimit;
+        const [locator, value] = command.target.split("=");
 
-    while (!element && waitingTime > 0) {
-        try {
-            element = await driver.findElement(By[locator](value));
-            if (element) break;
+        while (!element && waitingTime > 0) {
+            try {
+                element = await driver.findElement(By[locator](value));
+                if (element) break;
 
-            // waiting for 300 miliseconds to retry
-            await sleep(300);
-            waitingTime -= 300;
-            if (waitingTime <= 0) {
-                helper.log("waiting time limit exceeded", "red");
-                break;
-            }
-        } catch { }
+                // waiting for 300 miliseconds to retry
+                await sleep(300);
+                waitingTime -= 300;
+                if (waitingTime <= 0) {
+                    helper.log("waiting time limit exceeded", "red");
+                    break;
+                }
+            } catch { }
+        }
     }
+
+    // element had been found by "target" prop
+    if (element) return element;
+
+    // if element not found by "target" then try to find by "targets"
+    if (command.targets) {
+        for (const target in command.targets) {
+            const [expression, _] = target;
+            const [locator, value] = expression.split("=");
+            element = await driver.findElement(By[locator](value));
+            if (element) return element;
+        }
+    }
+
     return element;
 }
 
