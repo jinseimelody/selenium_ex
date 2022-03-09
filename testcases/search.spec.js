@@ -3,6 +3,7 @@ const { Builder, By, Key, until } = require('selenium-webdriver')
 const assert = require('assert')
 const fs = require('fs');
 const { v4: uuidv4 } = require('uuid');
+var config = require('config.json')('./config/search.json');
 
 const sleep = async (ms) => {
   return new Promise(resolve => setTimeout(resolve, ms));
@@ -24,7 +25,7 @@ describe('search', function() {
     // Step # | name | target | value
     // 1 | open | / | 
     // open URL
-    await driver.get("https://www.google.com/")
+    await driver.get(config.url)
     // 2 | setWindowSize | 1032x634 | 
     await driver.manage().window().setRect({ width: 1032, height: 634 })
     // 3 | type | name=q | gss-sol
