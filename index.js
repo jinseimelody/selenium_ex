@@ -44,14 +44,15 @@ const execute = async (pageObject) => {
         if (!commands) return;
 
         helper.log("case name: " + testCase.name, "green");
-        for (let command of commands) {
-            const exeResult = await executeCommand(url, command);
-            if (!exeResult) {
-                helper.log("test failed", "red");
-                return;
+        try {
+            for (let command of commands) {
+                await executeCommand(url, command);
+                // take screenshot when command executed successfully
+                helper.takeScreenShot(imagePath, driver);
             }
-            // take screenshot when command executed successfully
-            helper.takeScreenShot(imagePath, driver);
+        } catch (err) {
+            helper.log("test failed", "red");
+            break;
         }
 
         // todo: write test result to excel
@@ -75,14 +76,12 @@ const executeCommand = async (url, command) => {
 
         case "click": {
             const element = await findElement(command);
-            if (!element) return false;
             element.click();
         }; break;
 
         case "type":
         case "sendKeys": {
             const element = await findElement(command);
-            if (!element) return false;
             element.sendKeys(value);
         }; break;
 
@@ -105,7 +104,8 @@ const findElement = async (command) => {
         while (!element && waitingTime > 0) {
             try {
                 element = await driver.findElement(By[locator](value));
-                if (element) break;
+                // return when element had been found by "target" prop
+                if (element) return element;
 
                 // waiting for 300 miliseconds to retry
                 await sleep(300);
@@ -118,10 +118,7 @@ const findElement = async (command) => {
         }
     }
 
-    // element had been found by "target" prop
-    if (element) return element;
-
-    // if element not found by "target" then try to find by "targets"
+    // when element not found by "target" then try to find by "targets"
     if (command.targets) {
         for (const target in command.targets) {
             const [expression, _] = target;
