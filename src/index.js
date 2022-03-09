@@ -13,22 +13,37 @@ const waitingLimit = 1500;
 const driver = await new Builder().forBrowser('chrome').setChromeOptions().build();
 
 const load = () => {
-    helper.load(async (pageObjects) => {
-        try {
-            // foreach file in data folder
-            for (let pageObject of pageObjects) {
-                helper.log("file name: " + pageObject.name);
-
-                await execute(pageObject);
-            }
-        } catch (err) {
-            helper.log("exception: " + err, "red");
-        } finally {
-            setTimeout(() => {
-                await driver.quit();
-            }, 1000);
-        }
-    });
+    this.timeout(30000)
+  let driver
+  let vars
+  beforeEach(async function() {
+    driver = await new Builder().forBrowser('chrome').build()
+    vars = {}
+  })
+  afterEach(async function() {
+    await driver.quit();
+  })
+  it('search', async function() {
+    // Test name: search
+    // Step # | name | target | value
+    // 1 | open | / | 
+    // open URL
+    await driver.get("https://www.google.com/")
+    // 2 | setWindowSize | 1032x634 | 
+    await driver.manage().window().setRect({ width: 1032, height: 634 })
+    // 3 | type | name=q | gss-sol
+    await driver.findElement(By.name("q")).sendKeys("gss-sol")
+    // 4 | click | name=btnK | 
+    await driver.findElement(By.name("btnK")).click()
+    // 5 | click | xpath=//h3[contains(.,'Công Ty Cổ Phần Giải Pháp Không Gian Xanh')] | 
+    await driver.findElement(By.xpath("//h3[contains(.,\'Công Ty Cổ Phần Giải Pháp Không Gian Xanh\')]")).click()
+    // 6 | assertElementPresent | xpath=//div[@class='footer_bottom' and contains(., "Green Space Solution")]  | 
+    // confirm the GSS website is opened
+    {
+      const elements = await driver.findElements(By.xpath("//div[@class=\'footer_bottom\' and contains(., \"Green Space Solution\")] "))
+      assert(elements.length)
+    }
+  })
 };
 
 const execute = async (pageObject) => {

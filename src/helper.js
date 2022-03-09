@@ -47,19 +47,3 @@ export const printPage = async (path, driver) => {
         console.log(ex);
     }
 }
-
-// export const exportCsv = () => {
-//     const newWorkbook = new Excel.Workbook();
-//     await newWorkbook.xlsx.readFile('timesheets.xlsx');
-
-//     const newworksheet = newWorkbook.getWorksheet('ho.ten');
-//     newWorkbook.columns
-//     for (let index = 10; index <= 40; index++) {
-//         newworksheet.getCell('B' + index.toString()).value = 'trung.duong';
-//         newworksheet.getCell('C' + index.toString()).value = 'trung check in';
-//         newworksheet.getCell('D' + index.toString()).value = 'trung check out';
-//         newworksheet.getCell('E' + index.toString()).value = 'Không có ghi chú';
-//     }
-//     await newWorkbook.xlsx.writeFile('timesheets_output.xlsx');
-//     console.log("File is written");
-// }
