@@ -41,7 +41,6 @@ exports.findElement = async function (driver, locator, limit) {
             }
         } catch { }
     }
-    console.log("cc");
 
     return element;
 }
