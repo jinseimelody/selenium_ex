@@ -3,11 +3,6 @@ const { Builder, By, Key, until } = require('selenium-webdriver')
 const config = require('config.json')('./config/search.json');
 const { takeScreenShot } = require('../helper');
 
-
-const sleep = async (ms) => {
-  return new Promise(resolve => setTimeout(resolve, ms));
-}
-
 describe('search', function() {
   this.timeout(30000)
   let driver
@@ -33,7 +28,5 @@ describe('search', function() {
     await takeScreenShot("./images", driver);
     // await fs.writeFileSync('./images/' + uuidv4() + '.png', encodedString, 'base64');
     await driver.findElement(By.name("q")).sendKeys(Key.ENTER)
-
-    await sleep(3000);
   })
 })

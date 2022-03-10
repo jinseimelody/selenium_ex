@@ -4,8 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "npm run single",
-    "single": "./node_modules/.bin/mocha testcases/search.spec.js"
+    "test": "mocha"
   },
   "author": "",
   "license": "ISC",

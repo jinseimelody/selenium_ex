@@ -3,6 +3,10 @@ const {
     v4: uuidv4
 } = require('uuid');
 
+exports.sleep = async function (ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+}
+
 // driver: selenium driver
 exports.takeScreenShot =  async function (path, driver) {
     const encodedString = await driver.takeScreenshot();
@@ -12,4 +16,28 @@ exports.takeScreenShot =  async function (path, driver) {
     const relativePath = path + '/' + uuidv4() + '.png';
     console.log(relativePath);
     await fs.writeFileSync(relativePath, encodedString, 'base64');
+}
+
+exports.findElement = async function (driver, locator) {
+    let element = null;
+    let waitingTime = 3000;
+
+    while (!element && waitingTime > 0) {
+        try {
+            element = await driver.findElement(locator);
+            // return when element had been found by "target" prop
+            if (element) return element;
+
+            // waiting for 300 miliseconds to retry
+            await sleep(300);
+            waitingTime -= 300;
+            if (waitingTime <= 0) {
+                helper.log("waiting time limit exceeded", "red");
+                break;
+            }
+        } catch { }
+    }
+    console.log("cc");
+
+    return element;
 }
