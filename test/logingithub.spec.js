@@ -32,7 +32,7 @@ describe('login git hub', function () {
         await driver.findElement(By.id("password")).sendKeys("_Jin.Melody97");
         await driver.findElement(By.name("commit")).click();
         const element = await findElement(driver, By.linkText("jinseimelody/selenium_ex"));
-        await driver.actions({async: true}).move({origin:element}).perform()
-        await driver.findElement(By.linkText("jinseimelody/selenium_ex")).click()
+        await driver.actions({async: true}).move({origin:element}).perform();
+        await driver.findElement(By.linkText("jinseimelody/selenium_ex")).click();
     })
 })

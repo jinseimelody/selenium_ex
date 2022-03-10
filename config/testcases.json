@@ -1,0 +1,17 @@
+{
+    "screens": [
+        {
+            "name": "USER ADMINISTRATOR Page - Normal Cases",
+            "testCases": [
+                {
+                    "action": "Admin start to login in the first time",
+                    "expectedResult": "Login successfuly"
+                },
+                {
+                    "action": "Admin start to login",
+                    "expectedResult": "Display search result"
+                }
+            ]
+        }
+    ]
+}
