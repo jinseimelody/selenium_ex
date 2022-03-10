@@ -8,4 +8,4 @@ Setup
 3. start code
   - tham khảo: https://www.selenium.dev/documentation
 4. run
-  - npm start
+  - npm test (mocha will sequentially run all .js, .mjs or .cjs under ./test folder)
