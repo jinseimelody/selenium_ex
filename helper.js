@@ -7,12 +7,19 @@ exports.sleep = async function (ms) {
     return new Promise(resolve => setTimeout(resolve, ms));
 }
 
+
 // driver: selenium driver
-exports.takeScreenShot =  async function (path, driver) {
+exports.takeScreenShot =  async function (folderName, driver) {
     const encodedString = await driver.takeScreenshot();
+    if (!fs.existsSync('images')) {
+        fs.mkdirSync('images');
+    }
+
+    const path = "images/" + folderName;
     if (!fs.existsSync(path)) {
         fs.mkdirSync(path);
     }
+
     const relativePath = path + '/' + uuidv4() + '.png';
     console.log(relativePath);
     await fs.writeFileSync(relativePath, encodedString, 'base64');
