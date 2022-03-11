@@ -11,11 +11,15 @@ exports.sleep = async function (ms) {
 // driver: selenium driver
 exports.takeScreenShot =  async function (folderName, driver) {
     const encodedString = await driver.takeScreenshot();
-    if (!fs.existsSync('images')) {
-        fs.mkdirSync('images');
+    if (!fs.existsSync('output')) {
+        fs.mkdirSync('output');
     }
 
-    const path = "images/" + folderName;
+    if (!fs.existsSync('output/images')) {
+        fs.mkdirSync('output/images');
+    }
+
+    const path = "output/images/" + folderName;
     if (!fs.existsSync(path)) {
         fs.mkdirSync(path);
     }
