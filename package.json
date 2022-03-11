@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "mocha --reporter mochawesome --reporter-options reportDir=output/mochawesome,reportFilename=test_report --require mochawesome/register"
+    "test": "mocha --reporter mochawesome --reporter-options reportDir=output/mochawesome,reportFilename=test_report,autoOpen=true --require mochawesome/register"
   },
   "author": "",
   "license": "ISC",
@@ -19,6 +19,7 @@
   },
   "devDependencies": {
     "mocha": "^9.2.1",
-    "mochawesome": "^7.1.2"
+    "mochawesome": "^7.1.2",
+    "mochawesome-report-generator": "^6.1.1"
   }
 }
