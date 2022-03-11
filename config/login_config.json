@@ -1,0 +1,15 @@
+{
+    "description": {
+        "title": "Test màn hình login - Normal Cases",
+        "expectedResult": "Login thành công chuyển tới màn hình CAMERA MANAGEMENT"
+    },
+    "url": "http://54.254.149.126:4301/login",
+    "input": {
+        "userName": "hoangdv@nec.vn",
+        "password": "Necvn@123"
+    },
+    "output": {
+        "type": "element",
+        "selector": ["xpath", "//h1[contains(.,'CAMERA MANAGEMENT')]"]
+    }
+}

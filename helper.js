@@ -18,9 +18,13 @@ exports.takeScreenShot =  async function (path, driver) {
     await fs.writeFileSync(relativePath, encodedString, 'base64');
 }
 
-exports.findElement = async function (driver, locator) {
+exports.findElement = async function (driver, locator, limit) {
     let element = null;
     let waitingTime = 3000;
+
+    if (limit) {
+        waitingTime = limit;
+    }
 
     while (!element && waitingTime > 0) {
         try {
@@ -37,7 +41,6 @@ exports.findElement = async function (driver, locator) {
             }
         } catch { }
     }
-    console.log("cc");
 
     return element;
 }
