@@ -4,8 +4,6 @@ const assert = require('assert');
 const {
     Builder,
     By,
-    Key,
-    until
 } = require('selenium-webdriver');
 const addContext = require('mochawesome/addContext');
 const { login, sleep, findElement, ensureOutputDir, takeScreenShot } = require('../helper');
@@ -19,46 +17,87 @@ describe("Login Page - Normal Cases", function () {
     });
 
     beforeEach(async function () {
-        driver = await new Builder().forBrowser('chrome').build();
-        await login(driver);
+        driver = await new Builder().forBrowser(config.browser).build();
+        // await login(driver);
     })
 
     afterEach(async function () {
         await driver.quit();
     })
 
-    it ("Login and redirect to selenium_ex repository", async function() {
-        addContext(this, "Expected result: redirect to https://github.com/jinseimelody/selenium_ex");
+    it ("No. 001 - Login and display dash board", async function() {
+
+        addContext(this, {
+            title: "Input",
+            value: {
+                userName: config.userName,
+                password: "*************"
+            }
+        });
+        addContext(this, "Expected result: redirect to dashboard");
+
+        await driver.get(config.baseUrl + "/login");
+        // login to github
+        const loginField = await findElement(driver, By.id("login_field"));
+        loginField.click();
+        loginField.sendKeys(config.userName);
+    
+        const password = await findElement(driver, By.id("password"));
+        password.click();
+        password.sendKeys(config.password);
 
         {
-            // take daskboard screen shot
             const fileName = await takeScreenShot(driver);
-            addContext(this, "Capture: dashboard");
+            addContext(this, "Capture: before login");
             addContext(this, "../images" + "/" + fileName);
         }
 
+        await driver.findElement(By.name("commit")).click();
+
+        await sleep(1000);
         {
-            const element = await findElement(driver, By.linkText("jinseimelody/selenium_ex"));
+            // take daskboard screen shot
+            const fileName = await takeScreenShot(driver);
+            addContext(this, "Capture: after login");
+            addContext(this, "../images" + "/" + fileName);
+        }
+
+        const element = await findElement(driver, By.linkText("jinseimelody/selenium_ex"));
+        assert.notEqual(element, null, "ERROR: login failed");
+    });
+
+    it ("No. 002 - Redirect to myprofile by menu click", async function() {
+        addContext(this, "Expected result: https://github.com/settings/profile");
+        await login(driver);
+        {
+            const element = await driver.findElement(By.css(".avatar.avatar-small.circle"));
+            const actions = driver.actions({async: true});
+            // Performs mouse move action onto the element
+            await actions.move({origin:element}).perform();
+            element.click();
+        }
+
+        await sleep(1000);
+        {
+            const element = await driver.findElement(By.css(".dropdown-item[href='/jinseimelody']"));
             const actions = driver.actions({async: true});
             await actions.move({origin:element}).perform();
-            // mouse over on link text
+            // take menu screen shot
             const fileName = await takeScreenShot(driver);
-            addContext(this, "Capture: move to link text");
+            addContext(this, "Capture: befor menu click");
             addContext(this, "../images" + "/" + fileName);
             element.click();
         }
 
         await sleep(1000);
         {
-            // take repository screen shot
+            // take screen shot after redirect
             const fileName = await takeScreenShot(driver);
-            addContext(this, "Capture: selenium repository");
+            addContext(this, "Capture: after menu click");
             addContext(this, "../images" + "/" + fileName);
         }
 
-        // confirm test result
         const currentUrl = await driver.getCurrentUrl();
-        console.log("currentUrl : " + currentUrl);
-        assert.equal(currentUrl, "https://github.com/jinseimelody/selenium_ex", "ERROR: Wrong url");
+        assert.equal(currentUrl, "https://github.com/jinseimelody", "Wrong url");
     });
 })
